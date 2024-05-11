@@ -1,5 +1,6 @@
 package com.jans.rv.sample.ordered.app.activities
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -12,8 +13,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.jans.rv.sample.ordered.app.R
+import com.jans.rv.sample.ordered.app.activities.prctse.libAlphabeticalScroller.AlphabetItem
+import com.jans.rv.sample.ordered.app.activities.prctse.libStickyHeader.StickyHeaderItemDecoration
+import com.jans.rv.sample.ordered.app.activities.prctse.libStickyHeader.UserAdapter
 import com.jans.rv.sample.ordered.app.adapter.NamesAdapter
 import com.jans.rv.sample.ordered.app.databinding.ActivityMitarbeiterBinding
 import com.jans.rv.sample.ordered.app.models.NamesModel
@@ -31,54 +36,76 @@ class MitarbeiterScreen : AppCompatActivity() {
     private lateinit var binding: ActivityMitarbeiterBinding
     private lateinit var loadingIndicator: LoadingIndicatorView
     private lateinit var tvLoader:TextView
+
+    private var namesList: MutableList<NamesModelItem> = ArrayList()
+    private var mAlphabetItems: MutableList<AlphabetItem> = ArrayList()
+
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMitarbeiterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        clickListeners()
+//        setupIndicator()
+        setupRVCode()
+        setupAlphabeticalView()
 
+    }
+    private fun clickListeners() {
         binding.backBtn.setOnClickListener{
             finish()
         }
-
         binding.btnSearch.setOnClickListener{
             Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
         }
-
-
-        setupIndicator()
-        setupRVCode()
-
-
-
-
-
-
     }
-
-
-
     private fun sortNames():Comparator<NamesModelItem> =
         Comparator { o1, o2 -> o1!!.firstname.compareTo(o2!!.firstname) }
 
-
+    private fun setupAlphabeticalView(){
+        // make alphabetical view
+        mAlphabetItems = ArrayList()
+        val strAlphabets: MutableList<String> = ArrayList()
+        for (i in namesList.indices) {
+            val name = namesList[i].firstname
+            if (name.trim { it <= ' ' }.isEmpty())
+                continue
+            val word = name.substring(0, 1)
+            if (!strAlphabets.contains(word)) {
+                strAlphabets.add(word)
+                (mAlphabetItems as ArrayList<AlphabetItem>).add(AlphabetItem(i, word, false))
+            }
+        }
+        binding.fastScroller.setRecyclerView(recyclerView)
+        binding.fastScroller.setUpAlphabet(mAlphabetItems)
+    }
     private fun setupRVCode() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            loadingIndicator.stopAnimating()
-            tvLoader.visibility = GONE
-            val recyclerView = binding.recyclerView
-            // Code to Populate List
-            val namesList = getJsonList()
-            Collections.sort(namesList,sortNames())
-            Log.d("Response123", "${namesList.size}")
-            // Code for Setup Adapter for Recycler View
-            val namesAdapter = NamesAdapter(namesList)
+
+        recyclerView = binding.recyclerView
+        // Code to Populate List
+        namesList = getJsonList()
+        Collections.sort(namesList,sortNames())
+        Log.d("Response123", "${namesList.size}")
+        // Code for Setup Adapter for Recycler View
+        val namesAdapter = NamesAdapter(namesList)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = namesAdapter
+
+//        recyclerView.addItemDecoration(StickyHeaderItemDecoration(namesAdapter))
+
+
+
+        // Code for Loading Indicator to Hide when needed
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            loadingIndicator.stopAnimating()
+//            tvLoader.visibility = GONE
             recyclerView.visibility = View.VISIBLE
-            recyclerView.layoutManager = LinearLayoutManager(this)
-            recyclerView.adapter = namesAdapter
-        }, 2000)
+//        }, 2000)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupIndicator() {
 
         val mainLayout = binding.main

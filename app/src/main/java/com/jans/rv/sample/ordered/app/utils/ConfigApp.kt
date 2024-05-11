@@ -7,6 +7,11 @@ class ConfigApp {
        const val MALE_TYPE = "male"
        const val FEMALE_TYPE = "female"
 
+
+        const val TYPE_HEADER = 0
+        const val TYPE_ITEM = 1
+
+
     }
 
 

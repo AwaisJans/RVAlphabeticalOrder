@@ -74,10 +74,19 @@
         android:layout_marginTop="20dp"
         android:layout_below="@id/tbLyt"
         android:layout_width="match_parent"
+        android:layout_toStartOf="@id/fast_scroller"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_names" />
 
+    <com.jans.rv.sample.ordered.app.activities.prctse.libAlphabeticalScroller.RecyclerViewFastScroller
+        android:id="@+id/fast_scroller"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/tbLyt"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
 
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"/>
 
 
 

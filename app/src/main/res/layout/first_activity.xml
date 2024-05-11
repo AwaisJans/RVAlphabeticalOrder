@@ -3,34 +3,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="#F6F3F5"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6F3F5"
     tools:context=".activities.MitarbeiterScreen">
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:background="@color/white"
         android:id="@+id/tbLyt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:minHeight="50dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Practise Screen"
-            android:minHeight="50dp"
-            android:paddingEnd="40dp"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:gravity="center|start"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="30dp"
+            android:gravity="center|start"
+            android:minHeight="50dp"
+            android:paddingEnd="40dp"
             android:src="@drawable/back_svgrepo_com"
-            />
+            android:text="Home Screen"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btnMitar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tbLyt"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_btn"
+        android:elevation="5dp"
+        android:gravity="start|center"
+        android:minHeight="70dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        android:stateListAnimator="@null"
+        android:text="Mitarbeiter"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+
+    <Button
+        android:id="@+id/practiseScreenBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnMitar"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_btn"
+        android:elevation="5dp"
+        android:gravity="start|center"
+        android:minHeight="70dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="0dp"
+        android:stateListAnimator="@null"
+        android:text="Practise Screen"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>
