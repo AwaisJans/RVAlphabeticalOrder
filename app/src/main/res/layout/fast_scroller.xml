@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/fastscroller_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/bubble"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="48sp"
+        android:visibility="gone"
+        tools:text="A" />
+
+    <ImageView
+        android:id="@+id/fastscroller_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:src="@drawable/handle"
+        android:visibility="gone"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alphabet"
+        android:layout_width="40dp"
+        tools:listitem="@layout/item_alphabet_layout"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        />
+</merge>
