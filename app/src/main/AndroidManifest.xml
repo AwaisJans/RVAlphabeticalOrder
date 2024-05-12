@@ -21,6 +21,9 @@
         <activity
             android:name=".activities.prctse.PractiseScreen"
             android:exported="false" />
+        <activity
+            android:name=".activities.prctse.prctseScreenJava"
+            android:exported="false" />
 
 
         <activity

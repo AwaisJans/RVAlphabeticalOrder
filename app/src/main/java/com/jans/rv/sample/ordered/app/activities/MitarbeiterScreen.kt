@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.jans.rv.sample.ordered.app.R
-import com.jans.rv.sample.ordered.app.activities.prctse.libAlphabeticalScroller.AlphabetItem
-import com.jans.rv.sample.ordered.app.activities.prctse.libStickyHeader.StickyHeaderItemDecoration
-import com.jans.rv.sample.ordered.app.activities.prctse.libStickyHeader.UserAdapter
+import com.jans.rv.sample.ordered.app.libStickyHeaders.StickyRecyclerHeadersDecoration
+import com.jans.rv.sample.ordered.app.libAlphabeticalScroller.AlphabetItem
 import com.jans.rv.sample.ordered.app.adapter.NamesAdapter
 import com.jans.rv.sample.ordered.app.databinding.ActivityMitarbeiterBinding
 import com.jans.rv.sample.ordered.app.models.NamesModel
@@ -48,7 +47,7 @@ class MitarbeiterScreen : AppCompatActivity() {
         setContentView(binding.root)
 
         clickListeners()
-//        setupIndicator()
+        setupIndicator()
         setupRVCode()
         setupAlphabeticalView()
 
@@ -75,7 +74,13 @@ class MitarbeiterScreen : AppCompatActivity() {
             val word = name.substring(0, 1)
             if (!strAlphabets.contains(word)) {
                 strAlphabets.add(word)
-                (mAlphabetItems as ArrayList<AlphabetItem>).add(AlphabetItem(i, word, false))
+                (mAlphabetItems as ArrayList<AlphabetItem>).add(
+                    AlphabetItem(
+                        i,
+                        word,
+                        false
+                    )
+                )
             }
         }
         binding.fastScroller.setRecyclerView(recyclerView)
@@ -93,16 +98,23 @@ class MitarbeiterScreen : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = namesAdapter
 
-//        recyclerView.addItemDecoration(StickyHeaderItemDecoration(namesAdapter))
+
+        // Add the sticky headers decoration
+        val headersDecor = StickyRecyclerHeadersDecoration(namesAdapter)
+        recyclerView.addItemDecoration(headersDecor)
+        namesAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                headersDecor.invalidateHeaders()
+            }
+        })
 
 
-
-        // Code for Loading Indicator to Hide when needed
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            loadingIndicator.stopAnimating()
-//            tvLoader.visibility = GONE
+//         Code for Loading Indicator to Hide when needed
+        Handler(Looper.getMainLooper()).postDelayed({
+            loadingIndicator.stopAnimating()
+            tvLoader.visibility = GONE
             recyclerView.visibility = View.VISIBLE
-//        }, 2000)
+        }, 2000)
     }
 
     @SuppressLint("SetTextI18n")
