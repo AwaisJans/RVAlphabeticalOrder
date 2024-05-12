@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.jans.rv.sample.ordered.app.activities.prctse.PractiseScreen
+import com.jans.rv.sample.ordered.app.activities.prctse.prctseScreenJava
 import com.jans.rv.sample.ordered.app.databinding.FirstActivityBinding
 
 
