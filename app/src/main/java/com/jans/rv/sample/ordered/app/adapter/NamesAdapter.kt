@@ -16,7 +16,9 @@ import com.jans.rv.sample.ordered.app.utils.ConfigApp.Companion.MALE_TYPE
 
 class NamesAdapter(private var productsList: List<NamesModel.NamesModelItem>?) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() ,
+    // interface to implement for save recycler view from crash when scrolling without alphabetical scroller
     RecyclerViewFastScroller.BubbleTextGetter,
+    //  interface to implement for header
     StickyRecyclerHeadersAdapter<RecyclerView.ViewHolder?> {
 
     private lateinit var mContext: Context
@@ -25,7 +27,6 @@ class NamesAdapter(private var productsList: List<NamesModel.NamesModelItem>?) :
             return ItemsVH(LayoutInflater.from(parent.context).inflate(
                     R.layout.item_names, parent, false))
     }
-
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // getting Context
@@ -61,6 +62,7 @@ class NamesAdapter(private var productsList: List<NamesModel.NamesModelItem>?) :
         }
     }
 
+    // method to change alphabetical scroller same time with recycler view scrolling and change color of alphabet
     override fun getTextToShowInBubble(pos: Int): String {
         if (pos < 0 || pos >= productsList!!.size)
             return null!!

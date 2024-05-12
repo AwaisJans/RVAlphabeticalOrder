@@ -1,22 +1,27 @@
 package com.jans.rv.sample.ordered.app.libAlphabeticalScroller
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jans.rv.sample.ordered.app.R
 import kotlin.math.max
 import kotlin.math.min
 
-class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListener,
+
+open class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListener,
     OnTouchListener {
     private var recyclerView: RecyclerView? = null
-    private var alphabets: List<AlphabetItem>? = null
+    private var alphabets: MutableList<AlphabetItem>? = null
     private var alphabetRecyclerView: RecyclerView? = null
     private var alphabetAdapter: AlphabetAdapter? = null
     private var isInitialized = false
@@ -42,6 +47,7 @@ class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListen
         initialiseView(context)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     protected fun initialiseView(context: Context?) {
         if (isInitialized) {
             return
@@ -54,9 +60,10 @@ class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListen
         inflate(context, R.layout.fast_scroller, this)
 
         // Init alphabet recycler view
-        alphabetRecyclerView = findViewById<View>(R.id.alphabet) as RecyclerView
+        alphabetRecyclerView = findViewById(R.id.alphabet)!!
         alphabetRecyclerView!!.layoutManager = LinearLayoutManager(getContext())
         alphabetRecyclerView!!.setOnTouchListener(this)
+
     }
 
     //----------------------------------------------------------------------------------------------
@@ -151,8 +158,7 @@ class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListen
                     }
                     val verticalScrollOffset = recyclerView.computeVerticalScrollOffset()
                     val verticalScrollRange = recyclerView.computeVerticalScrollRange()
-                    val proportion =
-                        verticalScrollOffset.toFloat() / (verticalScrollRange.toFloat() - height)
+                    val proportion = verticalScrollOffset.toFloat() / (verticalScrollRange.toFloat() - height)
                     setRecyclerViewPositionWithoutScrolling(height * proportion)
                 }
 
@@ -165,13 +171,14 @@ class RecyclerViewFastScroller : LinearLayout, AlphabetAdapter.OnItemClickListen
         this.recyclerView!!.addOnScrollListener(onScrollListener)
     }
 
-    fun setUpAlphabet(alphabetItems: List<AlphabetItem>?) {
+    fun setUpAlphabet(alphabetItems: MutableList<AlphabetItem>?) {
         if (alphabetItems == null || alphabetItems.size <= 0) return
 
         alphabets = alphabetItems
         alphabetAdapter = AlphabetAdapter(context, alphabets)
         alphabetAdapter!!.setOnItemClickListener(this)
         alphabetRecyclerView!!.adapter = alphabetAdapter
+
     }
 
     private fun setRecyclerViewPositionWithoutScrolling(y: Float) {
