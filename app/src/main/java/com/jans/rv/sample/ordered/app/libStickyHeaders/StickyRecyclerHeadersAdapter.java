@@ -14,5 +14,4 @@ public interface StickyRecyclerHeadersAdapter<VH extends RecyclerView.ViewHolder
 
   int getItemCount();
 
-//  void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder, int position);
 }

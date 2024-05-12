@@ -22,19 +22,20 @@ import com.jans.rv.sample.ordered.app.adapter.NamesAdapter
 import com.jans.rv.sample.ordered.app.databinding.ActivityMitarbeiterBinding
 import com.jans.rv.sample.ordered.app.models.NamesModel
 import com.jans.rv.sample.ordered.app.models.NamesModel.NamesModelItem
+import com.jans.rv.sample.ordered.app.utils.ConfigApp.Companion.sortAlphabets
+import com.jans.rv.sample.ordered.app.utils.ConfigApp.Companion.sortNames
 import com.jans.rv.sample.ordered.app.utils.iosLoader.LoadingIndicatorView
 import java.util.Collections
 import java.util.Scanner
 
 
-//import com.jans.rv.sample.ordered.app.R
 
 
 class MitarbeiterScreen : AppCompatActivity() {
 
     private lateinit var binding: ActivityMitarbeiterBinding
     private lateinit var loadingIndicator: LoadingIndicatorView
-    private lateinit var tvLoader:TextView
+    private lateinit var tvLoader: TextView
 
     private var namesList: MutableList<NamesModelItem> = ArrayList()
     private var mAlphabetItems: MutableList<AlphabetItem> = ArrayList()
@@ -52,21 +53,34 @@ class MitarbeiterScreen : AppCompatActivity() {
         setupAlphabeticalView()
 
     }
+
     private fun clickListeners() {
-        binding.backBtn.setOnClickListener{
+        binding.backBtn.setOnClickListener {
             finish()
         }
-        binding.btnSearch.setOnClickListener{
+        binding.btnSearch.setOnClickListener {
             Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
         }
     }
-    private fun sortNames():Comparator<NamesModelItem> =
-        Comparator { o1, o2 -> o1!!.firstname.compareTo(o2!!.firstname) }
 
-    private fun setupAlphabeticalView(){
+    private fun setupAlphabeticalView() {
+        // setup List Of All Alphabets
+        setUpAlphabetsList()
         // make alphabetical view
+        binding.fastScroller.setRecyclerView(recyclerView)
+        binding.fastScroller.setUpAlphabet(mAlphabetItems)
+    }
+
+    private fun setUpAlphabetsList(){
         mAlphabetItems = ArrayList()
         val strAlphabets: MutableList<String> = ArrayList()
+        val list = mAlphabetItems as ArrayList<AlphabetItem>
+
+        // Sample List that has All Alphabets
+        val characters = ('a'..'z').toList()
+        val uppercaseCharacters = characters.map { it.uppercase() }
+
+        // Adding All Alphabets According to the Items
         for (i in namesList.indices) {
             val name = namesList[i].firstname
             if (name.trim { it <= ' ' }.isEmpty())
@@ -74,7 +88,8 @@ class MitarbeiterScreen : AppCompatActivity() {
             val word = name.substring(0, 1)
             if (!strAlphabets.contains(word)) {
                 strAlphabets.add(word)
-                (mAlphabetItems as ArrayList<AlphabetItem>).add(
+                Log.d("Response123", "$word $i")
+                list.add(
                     AlphabetItem(
                         i,
                         word,
@@ -83,15 +98,27 @@ class MitarbeiterScreen : AppCompatActivity() {
                 )
             }
         }
-        binding.fastScroller.setRecyclerView(recyclerView)
-        binding.fastScroller.setUpAlphabet(mAlphabetItems)
+        // Adding Alphabets that are skipped
+        for (char in uppercaseCharacters) {
+            if (!strAlphabets.contains(char)) {
+                list.add(
+                    AlphabetItem(
+                        0,
+                        char,
+                        false))
+            }
+        }
+        // Sorting Alphabets
+        Collections.sort(list, sortAlphabets())
+        list.add(AlphabetItem(0, "#", false))
     }
+
     private fun setupRVCode() {
 
         recyclerView = binding.recyclerView
         // Code to Populate List
         namesList = getJsonList()
-        Collections.sort(namesList,sortNames())
+        Collections.sort(namesList, sortNames())
         Log.d("Response123", "${namesList.size}")
         // Code for Setup Adapter for Recycler View
         val namesAdapter = NamesAdapter(namesList)
@@ -152,8 +179,6 @@ class MitarbeiterScreen : AppCompatActivity() {
         mainLayout.addView(loadingIndicator)
         setContentView(mainLayout)
         loadingIndicator.startAnimating()
-
-
     }
 
     private fun getJsonList(): MutableList<NamesModelItem> {
