@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.jans.rv.sample.ordered.app.R
 import com.jans.rv.sample.ordered.app.libStickyHeaders.StickyRecyclerHeadersAdapter
 import com.jans.rv.sample.ordered.app.libAlphabeticalScroller.RecyclerViewFastScroller
@@ -52,11 +53,34 @@ class NamesAdapter(private var productsList: List<NamesModel.NamesModelItem>?) :
             // set Firstname and Lastname
             titleTextView.text = "${user?.firstname}, ${user?.lastname}"
             // check if male or female
-            if (user?.gender == MALE_TYPE) {
-                imgPerson.setImageResource(R.drawable.male_person_svgrepo_com)
-            } else {
-                imgPerson.setImageResource(R.drawable.lady_4_svgrepo_com)
-            }
+
+            val list = listOf("https://media.istockphoto.com/id/1356070782/photo/businessman-and-businesswoman-smiling-looking-at-phone.jpg?b=1&s=612x612&w=0&k=20&c=9X6bxqHOA3SK43bmFoboFDY2gbgsk__7N_I2FP1myuE=",
+            "https://media.istockphoto.com/id/1333405308/photo/positive-woman-video-calling-using-laptop-at-home.jpg?b=1&s=612x612&w=0&k=20&c=Bq5BKvL0yjKpCi_Xsg_iDUyLEs8KM8ZR9Nmerdz2W98=",
+            "https://media.istockphoto.com/id/1365824279/photo/black-businesswoman-sitting-at-her-desk-working-on-a-laptop-computer-smiling-successful.jpg?b=1&s=612x612&w=0&k=20&c=jU4VsRMl5vYzcwwTCy8xKjUK6ediEi_bhGFmY4bz3W4=",
+           "https://media.istockphoto.com/id/1313901506/photo/cropped-shot-of-an-african-american-young-woman-using-smart-phone-at-home-smiling-african.jpg?b=1&s=612x612&w=0&k=20&c=t0ZJ3i_AZr8RWYu2Q7yPhJC6q01owZTcR4_S-WH5564=",
+            "https://images.pexels.com/photos/123335/pexels-photo-123335.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "https://images.pexels.com/photos/8088444/pexels-photo-8088444.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "https://images.pexels.com/photos/3153198/pexels-photo-3153198.jpeg?auto=compress&cs=tinysrgb&w=800",
+            "https://images.pexels.com/photos/927022/pexels-photo-927022.jpeg?auto=compress&cs=tinysrgb&w=800")
+
+
+                if (user?.gender == MALE_TYPE) {
+                        Glide.with(itemView.context)
+                            .load(list[8])
+                            .skipMemoryCache(true)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .into(imgPerson)
+                } else {
+                        Glide.with(itemView.context)
+                            .load(list[5])
+                            .skipMemoryCache(true)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .into(imgPerson)
+                    }
+
+
             // set Address
             addressTextView.text = user?.address
         }
